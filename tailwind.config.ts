@@ -13,17 +13,15 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      rotate: {
-        '3d': 'rotate3d(1, 1, 1, 15deg)', // Tambahkan rotasi 3D
+      keyframes: {
+        rotate: {
+          '50%': { transform: 'rotateY(360deg)' },
+          '100%': { transform: 'rotateY(360deg)' },
+        }
       },
-      transitionProperty: {
-        'transform': 'transform' // Tambahkan properti transisi untuk transformasi
-      }
-    },
-  },
-  variants: {
-    extend: {
-      transform: ['hover'], // Tambahkan varian hover untuk transformasi
+      animation: {
+        rotate: 'rotate 4s ease infinite',
+      },
     },
   },
   plugins: [],

@@ -67,7 +67,7 @@ export default function HomePage() {
       {/* Form */}
       <div>
         <form className="max-w-md mx-auto">
-          <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 ">
+          <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Pilih Negara
           </label>
           <select
@@ -85,8 +85,8 @@ export default function HomePage() {
       </div>
 
       {/* Cards */}
-      <div className="pt-6">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+      <div className="p-8 flex justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
           {cards.map((card, index) => (
             <Card
               key={index}
