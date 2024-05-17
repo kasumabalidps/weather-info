@@ -51,6 +51,7 @@ export default function HomePage() {
 
   return (
     <div className="px-4">
+      {/* Header */}
       <div className="text-center">
         <h2 className="text-3xl font-bold pt-10 flex items-center justify-center">
           🌧 Weather Info NextJS
@@ -62,9 +63,11 @@ export default function HomePage() {
         <p className="font-semibold">🕛 Waktu Saat Ini: {currentTime}</p>
         <p className="font-semibold">🌏 Negara Saat Ini: {selectedCountry}</p>
       </div>
+
+      {/* Form */}
       <div>
-        <form className="max-w-sm mx-auto">
-          <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <form className="max-w-md mx-auto">
+          <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 ">
             Pilih Negara
           </label>
           <select
@@ -80,8 +83,10 @@ export default function HomePage() {
           </select>
         </form>
       </div>
-      <div className="p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">{/* Mulai Colom Disini*/}
+
+      {/* Cards */}
+      <div className="pt-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
           {cards.map((card, index) => (
             <Card
               key={index}
@@ -91,7 +96,7 @@ export default function HomePage() {
               avgTemp={card.avgTemp}
             />
           ))}
-        </div> {/* Akhir Colom Disini*/}
+        </div>
       </div>
     </div>
   );
