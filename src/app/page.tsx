@@ -1,3 +1,8 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import Card from './card';
+
 // inspiration : https://onthisday.bufferhead.com/
 
 export default function HomePage() {
@@ -8,8 +13,44 @@ export default function HomePage() {
     { code: "DE", name: "Germany" }
   ];
 
+  const [currentDate, setCurrentDate] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState('');
+
+  useEffect(() => {
+    // Update time and date only on client side
+    const updateDateTime = () => {
+      const now = new Date();
+      setCurrentDate(now.toLocaleDateString('id-ID', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      }));
+      setCurrentTime(now.toLocaleTimeString('id-ID', {
+        hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true, timeZoneName: 'short'
+      }));
+    };
+
+    updateDateTime();
+    const timer = setInterval(updateDateTime, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const countryCode = event.target.value;
+    const country = countries.find(country => country.code === countryCode);
+    setSelectedCountry(country ? country.name : "");
+  };
+
+  const cards = [
+    { date: "May 17, 2019", maxTemp: "31.0°C", minTemp: "25.0°C", avgTemp: "27.5°C" },
+    { date: "May 18, 2019", maxTemp: "30.0°C", minTemp: "24.0°C", avgTemp: "26.5°C" },
+    { date: "May 19, 2019", maxTemp: "32.0°C", minTemp: "26.0°C", avgTemp: "29.0°C" },
+    { date: "May 20, 2019", maxTemp: "33.0°C", minTemp: "27.0°C", avgTemp: "30.0°C" },
+    { date: "May 21, 2019", maxTemp: "34.0°C", minTemp: "28.0°C", avgTemp: "31.0°C" }
+  ];
+
   return (
-    <div>
+    <div className="px-4">
       <div className="text-center">
         <h2 className="text-3xl font-bold pt-10 flex items-center justify-center">
           🌧 Weather Info NextJS
@@ -17,43 +58,40 @@ export default function HomePage() {
         <p className="font-semibold pt-1 pb-4 max-w-md mx-auto">
           Periksa prakiraan cuaca untuk provinsi di kota Anda agar tetap terinformasi dan siap menghadapi perubahan cuaca.
         </p>
-        <p className="font-semibold">Waktu Saat Ini: </p>
-        <p className="font-semibold">Negara Saat Ini: </p>
+        <p className="font-semibold">🗓️ Tanggal Saat Ini: {currentDate}</p>
+        <p className="font-semibold">🕛 Waktu Saat Ini: {currentTime}</p>
+        <p className="font-semibold">🌏 Negara Saat Ini: {selectedCountry}</p>
       </div>
       <div>
         <form className="max-w-sm mx-auto">
           <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Select an option
+            Pilih Negara
           </label>
           <select
             id="countries"
+            defaultValue=""
+            onChange={handleCountryChange}
             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
-            <option selected>Pilih Negara</option>
+            <option value="" disabled>Pilih Negara</option>
             {countries.map(country => (
               <option key={country.code} value={country.code}>{country.name}</option>
             ))}
           </select>
         </form>
       </div>
-      <div>
-        <div>
-          <a href="#" className="block max-w-[20%] p-4 bg-white border border-gray-200 rounded-lg shadow">
-            <p className="font-semibold text-sm text-gray-600">May 17, 2019</p>
-            <div className="grid grid-cols-2 pt-4 text-center divide-x">
-              <div>
-                <p className="text-red-600 text-[0.82rem]">Max</p>
-                <h1 className="text-red-600 font-semibold text-[1.20rem]">31.0°C</h1>
-              </div>
-              <div>
-                <p className="text-blue-600 text-[0.82rem]">Min</p>
-                <h1 className="text-blue-600 font-semibold text-[1.20rem]">31.0°C</h1>
-              </div>
-            </div>
-            <hr className="my-2 border-gray-300 w-[70%] mx-auto" />
-            <p className="text-center text-sm text-gray-600">Avg Temperature: 27.5°C</p>
-          </a>
-        </div>
+      <div className="p-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">{/* Mulai Colom Disini*/}
+          {cards.map((card, index) => (
+            <Card
+              key={index}
+              date={card.date}
+              maxTemp={card.maxTemp}
+              minTemp={card.minTemp}
+              avgTemp={card.avgTemp}
+            />
+          ))}
+        </div> {/* Akhir Colom Disini*/}
       </div>
     </div>
   );
