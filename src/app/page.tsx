@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Card from './card';
+import Card from '../components/card';
 import Loading from '../components/loading'; // Import komponen Loading
 
 export default function HomePage() {
