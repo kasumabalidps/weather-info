@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Card from './card';
 import Loading from '../components/loading'; // Import komponen Loading
 
-// inspiration : https://onthisday.bufferhead.com/
-
 export default function HomePage() {
   const countries = [
     { code: "US", name: "United States" },

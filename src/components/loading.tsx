@@ -4,7 +4,11 @@ import React from 'react';
 const Loading = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
-      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+      <div className="flex space-x-2">
+        <div className="w-5 h-5 bg-black rounded-full animate-bounce"></div>
+        <div className="w-5 h-5 bg-black rounded-full animate-bounce animate-delay-200"></div>
+        <div className="w-5 h-5 bg-black rounded-full animate-bounce animate-delay-400"></div>
+      </div>
     </div>
   );
 };
