@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Card from './card';
+import Loading from '../components/loading'; // Import komponen Loading
 
 // inspiration : https://onthisday.bufferhead.com/
 
@@ -16,9 +17,14 @@ export default function HomePage() {
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
+  const [loading, setLoading] = useState(true); // State untuk animasi loading
 
   useEffect(() => {
-    // Update time and date only on client side
+    // Simulasikan loading selama 2 detik
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
     const updateDateTime = () => {
       const now = new Date();
       setCurrentDate(now.toLocaleDateString('id-ID', {
@@ -48,6 +54,10 @@ export default function HomePage() {
     { date: "May 20, 2019", maxTemp: "33.0°C", minTemp: "27.0°C", avgTemp: "30.0°C" },
     { date: "May 21, 2019", maxTemp: "34.0°C", minTemp: "28.0°C", avgTemp: "31.0°C" }
   ];
+
+  if (loading) {
+    return <Loading />; // Tampilkan animasi loading saat state loading bernilai true
+  }
 
   return (
     <div className="px-4">
