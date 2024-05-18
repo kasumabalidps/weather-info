@@ -2,23 +2,32 @@
 
 import React, { useState, useEffect } from 'react';
 import Card from '../components/card';
+import CardLoading from '../components/cardLoading';
 import Loading from '../components/loading'; // Import komponen Loading
+import { fetchWeatherData } from '../utils/fetchWeather'; // Import fungsi fetchWeatherData
+
+interface WeatherCard {
+  date: string;
+  maxTemp: string;
+  minTemp: string;
+  avgTemp: string;
+}
 
 export default function HomePage() {
-  const countries = [
-    { code: "US", name: "United States" },
-    { code: "CA", name: "Canada" },
-    { code: "FR", name: "France" },
-    { code: "DE", name: "Germany" }
+  const provinces = [
+    { code: "Bali", name: "Bali" },
+    // Tambahkan semua provinsi lainnya
   ];
 
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [loading, setLoading] = useState(true); // State untuk animasi loading
+  const [selectedProvince, setSelectedProvince] = useState('');
+  const [loading, setLoading] = useState(true); // State untuk animasi loading halaman
+  const [cardLoading, setCardLoading] = useState(false); // State untuk animasi loading card
+  const [cards, setCards] = useState<WeatherCard[]>([]); // State for weather card data
 
   useEffect(() => {
-    // Simulasikan loading selama 3 detik
+    // Simulasikan loading halaman selama 3 detik
     setTimeout(() => {
       setLoading(false);
     }, 3000);
@@ -39,19 +48,20 @@ export default function HomePage() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const countryCode = event.target.value;
-    const country = countries.find(country => country.code === countryCode);
-    setSelectedCountry(country ? country.name : "");
-  };
+  const handleProvinceChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const provinceCode = event.target.value;
+    const province = provinces.find(province => province.code === provinceCode);
+    setSelectedProvince(province ? province.name : "");
 
-  const cards = [
-    { date: "May 17, 2019", maxTemp: "31.0°C", minTemp: "25.0°C", avgTemp: "27.5°C" },
-    { date: "May 18, 2019", maxTemp: "30.0°C", minTemp: "24.0°C", avgTemp: "26.5°C" },
-    { date: "May 19, 2019", maxTemp: "32.0°C", minTemp: "26.0°C", avgTemp: "29.0°C" },
-    { date: "May 20, 2019", maxTemp: "33.0°C", minTemp: "27.0°C", avgTemp: "30.0°C" },
-    { date: "May 21, 2019", maxTemp: "34.0°C", minTemp: "28.0°C", avgTemp: "31.0°C" }
-  ];
+    if (provinceCode) {
+      setCardLoading(true);
+      console.log(`Selected province code: ${provinceCode}`);
+      const weatherData = await fetchWeatherData(provinceCode);
+      console.log('Weather data:', weatherData);
+      setCards(weatherData);
+      setCardLoading(false);
+    }
+  };
 
   if (loading) {
     return <Loading />; // Tampilkan animasi loading saat state loading bernilai true
@@ -69,24 +79,24 @@ export default function HomePage() {
         </p>
         <p className="font-semibold">🗓️ Tanggal Saat Ini: {currentDate}</p>
         <p className="font-semibold">🕛 Waktu Saat Ini: {currentTime}</p>
-        <p className="font-semibold">🌏 Negara Saat Ini: {selectedCountry}</p>
+        <p className="font-semibold">🌏 Provinsi Saat Ini: {selectedProvince}</p>
       </div>
 
       {/* Form */}
       <div>
         <form className="max-w-md mx-auto">
-          <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Pilih Negara
+          <label htmlFor="provinces" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Pilih Provinsi
           </label>
           <select
-            id="countries"
+            id="provinces"
             defaultValue=""
-            onChange={handleCountryChange}
+            onChange={handleProvinceChange}
             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
-            <option value="" disabled>Pilih Negara</option>
-            {countries.map(country => (
-              <option key={country.code} value={country.code}>{country.name}</option>
+            <option value="" disabled>Pilih Provinsi</option>
+            {provinces.map(province => (
+              <option key={province.code} value={province.code}>{province.name}</option>
             ))}
           </select>
         </form>
@@ -95,15 +105,17 @@ export default function HomePage() {
       {/* Cards */}
       <div className="p-8 flex justify-center">
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-          {cards.map((card, index) => (
-            <Card
-              key={index}
-              date={card.date}
-              maxTemp={card.maxTemp}
-              minTemp={card.minTemp}
-              avgTemp={card.avgTemp}
-            />
-          ))}
+          {cardLoading 
+            ? Array.from({ length: 5 }, (_, i) => <CardLoading key={i} />)
+            : cards.map((card, index) => (
+                <Card
+                  key={index}
+                  date={card.date}
+                  maxTemp={card.maxTemp}
+                  minTemp={card.minTemp}
+                  avgTemp={card.avgTemp}
+                />
+              ))}
         </div>
       </div>
     </div>

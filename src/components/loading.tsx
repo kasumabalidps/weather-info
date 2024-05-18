@@ -1,3 +1,4 @@
+// components/loading.tsx
 import React from 'react';
 
 const Loading = () => {
