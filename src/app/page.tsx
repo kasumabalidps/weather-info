@@ -18,10 +18,10 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true); // State untuk animasi loading
 
   useEffect(() => {
-    // Simulasikan loading selama 2 detik
+    // Simulasikan loading selama 3 detik
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 3000);
 
     const updateDateTime = () => {
       const now = new Date();
@@ -58,7 +58,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="px-4">
+    <div className="px-4 animate-fade-in"> {/* Tambahkan kelas animasi fade-in */}
       {/* Header */}
       <div className="text-center">
         <h2 className="text-3xl font-bold pt-10 flex items-center justify-center">

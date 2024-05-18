@@ -9,7 +9,7 @@
 }
 
 .animate-bounce {
-  animation: bounce 1s infinite;
+  animation: bounce 1.5s infinite;
 }
 
 .animate-delay-200 {
@@ -18,4 +18,13 @@
 
 .animate-delay-400 {
   animation-delay: 0.4s;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
 }
